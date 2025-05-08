@@ -6,14 +6,12 @@ import type { Employee } from "./types";
 import EmployeeSelect from "./components/EmployeeSelect";
 import AttendanceStatus from "./components/AttendanceStatus";
 import AttendanceHistory from "./components/AttendanceHistory";
-import axios from "axios";
 
 function App() {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
   const [refreshKey, setRefreshKey] = useState(0); // 화면 갱신을 위한 키
-  const [apiTestResult, setApiTestResult] = useState<string | null>(null);
 
   // 직원 선택 핸들러
   const handleSelectEmployee = useCallback((employee: Employee | null) => {
@@ -25,19 +23,6 @@ function App() {
     setRefreshKey((prev) => prev + 1);
     toast.success("출퇴근 정보가 갱신되었습니다!");
   }, []);
-
-  // API 테스트 핸들러
-  const testApi = async () => {
-    try {
-      const response = await axios.get("/api/test");
-      setApiTestResult(JSON.stringify(response.data, null, 2));
-      toast.success("API 테스트 성공!");
-    } catch (error) {
-      console.error("API 테스트 실패:", error);
-      setApiTestResult(JSON.stringify(error, null, 2));
-      toast.error("API 테스트 실패!");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-indigo-50 to-purple-50">
@@ -92,47 +77,6 @@ function App() {
             </div>
           </div>
         </header>
-
-        {/* API 테스트 섹션 */}
-        <div className="bg-white backdrop-blur-sm bg-opacity-90 rounded-2xl shadow-lg p-6 border border-gray-100 transition-all hover:border-indigo-200 hover:shadow-xl mb-10">
-          <div className="border-b border-gray-100 pb-4 mb-4">
-            <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-indigo-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              API 테스트
-            </h2>
-          </div>
-          <div className="flex flex-col gap-4">
-            <p className="text-gray-600">
-              API 연결을 테스트하려면 아래 버튼을 클릭하세요.
-            </p>
-            <button
-              onClick={testApi}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg shadow transition-colors w-full md:w-auto"
-            >
-              API 테스트 실행
-            </button>
-            {apiTestResult && (
-              <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200 overflow-auto">
-                <pre className="text-sm text-gray-700 whitespace-pre-wrap">
-                  {apiTestResult}
-                </pre>
-              </div>
-            )}
-          </div>
-        </div>
 
         <main className="space-y-10">
           <div className="bg-white backdrop-blur-sm bg-opacity-90 rounded-2xl shadow-lg p-6 border border-gray-100 transition-all hover:border-indigo-200 hover:shadow-xl">
