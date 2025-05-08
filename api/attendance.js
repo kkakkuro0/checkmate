@@ -1,4 +1,4 @@
-import { notion, ATTENDANCE_DATABASE_ID } from "./notionClient";
+import { notion, ATTENDANCE_DATABASE_ID } from "./notionClient.js";
 
 export default async function handler(req, res) {
   // CORS 헤더 설정
